@@ -222,8 +222,49 @@ Use the superuser credentials you created earlier during `createsuperuser`.
 
 In the admin panel, locate the `Post` model under the `Blog` section. After adding posts, visit `http://127.0.0.1:8000/`. The homepage should now list the two posts.
 
-### Step 5: Add routes for the homepage ( / ) and detail pages ( /post/<id>/ ). 
+### Step 5: Update Routes Detail Pages
 
+**Update URLs in `blog/urls.py`**:
+
+Modify the detail page route to use a more descriptive URL:
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.post_list, name='post_list'),  # Homepage
+    path('post/<int:pk>/', views.post_detail, name='post_detail'),  # Detail page
+]
+```
+
+**Update Links in Templates**:
+
+Update the `post_list.html` template to match the new detail page route:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Homepage</title>
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="post/{{ post.id }}/">{{ post.title }}</a>
+                ({{ post.created|date:"Y-m-d H:i" }})
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+```
+
+**Test the New Routes**:
+
+Visit the homepage (`http://127.0.0.1:8000/`) and click on a post title. It should now navigate to a URL like `/post/1/` instead of `/1/`.
 
 
 ### Create a base.html template for a consistent layout with a header, footer, and {% block content %}.
