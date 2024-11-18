@@ -210,11 +210,21 @@ python manage.py runserver
 
 Run the server. Visit the homepage at `http://127.0.0.1:8000/`. There are no posts yet, all you will see is `Blog Posts`.
 
-### Step 4: Add Two Sample Posts Through the Admin Panel
+### Step 4: Add Sample Posts Through the Admin Panel
+
+**Log In to the Admin Panel**:
+
+Open the admin panel in your browser: `http://127.0.0.1:8000/admin`.
+
+Use the superuser credentials you created earlier during `createsuperuser`.
+
+**Add Posts**:
+
+In the admin panel, locate the `Post` model under the `Blog` section. After adding posts, visit `http://127.0.0.1:8000/`. The homepage should now list the two posts.
+
+### Step 5: Add routes for the homepage ( / ) and detail pages ( /post/<id>/ ). 
 
 
-
-### Add routes for the homepage ( / ) and detail pages ( /post/<id>/ ). 
 
 ### Create a base.html template for a consistent layout with a header, footer, and {% block content %}.
 
