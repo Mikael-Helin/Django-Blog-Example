@@ -44,7 +44,79 @@ python manage.py runserver
 
 Visit `http://127.0.0.1:8000` in your browser. It should show the Django "It worked!" page.
 
-### Create a Post model with fields for title, content, and created and run migrations.
+### Step 2: Create a Post Model
+
+**Define the Model**:
+
+Open `blog/models.py`.
+
+Add the following `Post` model:
+
+```python
+from django.db import models
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+```
+
+**Field Explanation**:
+
+   - `title`: A `CharField` for the post title with a maximum length of 200 characters.
+   - `content`: A `TextField` for the post's body.
+   - `created`: A `DateTimeField` that automatically sets the current timestamp when a post is created.
+
+
+
+**Make Migrations**:
+
+Run the following command to generate migration files for the `Post` model:
+     
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+**Verify**:
+
+Run the server again to ensure everything works:
+
+```bash
+python manage.py runserver
+```
+
+**Test the Model in the Admin Interface**:
+
+Register the model in `blog/admin.py` by adding:
+
+```python
+from django.contrib import admin
+from .models import Post
+
+admin.site.register(Post)
+```
+
+Create a superuser if you haven't already:
+
+```bash
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Log in to the admin interface at `http://127.0.0.1:8000/admin` and check if the `Post` model appears.
+
+
+
+
+
+
+
+
+
 
 ### Register the Post model in the admin and create a superuser to manage posts.
 
