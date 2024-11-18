@@ -109,18 +109,110 @@ python manage.py runserver
 
 Log in to the admin interface at `http://127.0.0.1:8000/admin` and check if the `Post` model appears.
 
+### Step 3: Define Homepage and Detail Views
+
+1. **Create the Views**:
+
+Open `blog/views.py`. Add the following code:
+
+```python
+from django.shortcuts import render, get_object_or_404
+from .models import Post
+
+# Homepage view to list posts
+def post_list(request):
+    posts = Post.objects.all().order_by('-created')  # Fetch posts ordered by creation date
+    return render(request, 'blog/post_list.html', {'posts': posts})
+
+# Detail view for a single post
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)  # Fetch post by primary key or return 404
+    return render(request, 'blog/post_detail.html', {'post': post})
+```
+
+**Set Up URLs**:
+
+Create a file named `urls.py` inside the `blog` app directory.
+
+Add the following code:
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.post_list, name='post_list'),  # Homepage URL
+    path('<int:pk>/', views.post_detail, name='post_detail'),  # Detail page URL
+]
+```
+
+Update the `myblog/urls.py` file to include the `blog` app URLs:
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),  # Include the blog app's URLs
+]
+```
+
+**Create Templates**:
+
+Inside the `blog` app, create a folder named `templates`, and within it, a folder named `blog`.
+
+```bash
+mkdir -p blog/templates/blog
+python manage.py runserver
+```
+
+**Homepage Template**: `blog/templates/blog/post_list.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Homepage</title>
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{{ post.id }}/">{{ post.title }}</a> 
+                ({{ post.created|date:"Y-m-d H:i" }})
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+```
+
+**Detail Page Template**: `blog/templates/blog/post_detail.html`:
+     
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.created|date:"Y-m-d H:i" }}</p>
+    <p>{{ post.content }}</p>
+    <a href="/">Back to Homepage</a>
+</body>
+</html>
+```
+
+**Test the Views**:
+
+Run the server. Visit the homepage at `http://127.0.0.1:8000/`. There are no posts yet, all you will see is `Blog Posts`.
+
+### Step 4: Add Two Sample Posts Through the Admin Panel
 
 
-
-
-
-
-
-
-
-### Register the Post model in the admin and create a superuser to manage posts.
-
-### Define a homepage view to list posts and a detail view to show individual posts.
 
 ### Add routes for the homepage ( / ) and detail pages ( /post/<id>/ ). 
 
@@ -132,4 +224,4 @@ Log in to the admin interface at `http://127.0.0.1:8000/admin` and check if the 
 
 ### Use the admin panel to create sample posts.
 
-### And finnally run the development server and verify.The hompage should display list of postsAnd clicking a title navigates to the corresponding detail page.
+### And finnally run the development server and verify.The hompage should display list of posts And clicking a title navigates to the corresponding detail page.
