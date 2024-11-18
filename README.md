@@ -266,8 +266,88 @@ Update the `post_list.html` template to match the new detail page route:
 
 Visit the homepage (`http://127.0.0.1:8000/`) and click on a post title. It should now navigate to a URL like `/post/1/` instead of `/1/`.
 
+### Step 6: Create `base.html` Template for a Consistent Layout
 
-### Create a base.html template for a consistent layout with a header, footer, and {% block content %}.
+**Create `base.html`**:
+
+Inside the `blog/templates/blog/` directory, create a file named `base.html`.
+
+Add the following content:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Blog{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1><a href="/">My Blog</a></h1>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2024 My Blog</p>
+    </footer>
+</body>
+</html>
+```
+
+**Explanation**:
+
+`{% block title %}`: Allows child templates to customize the page title.
+
+`{% block content %}`: Provides a placeholder for specific content in child templates.
+
+**Update `post_list.html`**:
+
+Modify `post_list.html` to extend `base.html`:
+
+```html
+{% extends "blog/base.html" %}
+
+{% block title %}Homepage - My Blog{% endblock %}
+
+{% block content %}
+    <h2>Blog Posts</h2>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="post/{{ post.id }}/">{{ post.title }}</a>
+                ({{ post.created|date:"Y-m-d H:i" }})
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+```
+
+**Update `post_detail.html`**:
+   
+Modify `post_detail.html` to extend `base.html`:
+
+```html
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }} - My Blog{% endblock %}
+
+{% block content %}
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.created|date:"Y-m-d H:i" }}</p>
+    <p>{{ post.content }}</p>
+    <a href="/">Back to Homepage</a>
+{% endblock %}
+```
+
+**Test the Layout**:
+
+Refresh the homepage and detail pages in your browser. Both pages should now share the consistent header, footer, and overall layout from `base.html`.
 
 ### Extend base.html for the homepage to list post titles linking to detail pages.
 

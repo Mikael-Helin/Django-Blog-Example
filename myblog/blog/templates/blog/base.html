@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Blog{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1><a href="/">My Blog</a></h1>
+        <hr>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2024 My Blog</p>
+    </footer>
+</body>
+</html>
