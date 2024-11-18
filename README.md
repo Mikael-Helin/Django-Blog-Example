@@ -348,11 +348,3 @@ Modify `post_detail.html` to extend `base.html`:
 **Test the Layout**:
 
 Refresh the homepage and detail pages in your browser. Both pages should now share the consistent header, footer, and overall layout from `base.html`.
-
-### Extend base.html for the homepage to list post titles linking to detail pages.
-
-### Extend base.html for the detail page to display the post's title and content.
-
-### Use the admin panel to create sample posts.
-
-### And finnally run the development server and verify.The hompage should display list of posts And clicking a title navigates to the corresponding detail page.
